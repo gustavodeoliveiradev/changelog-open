@@ -1,0 +1,15 @@
+node_modules
+# Keep environment variables out of version control
+.env
+
+/src/generated/prisma
+
+# Prisma AI agent skills (gerado automaticamente, não essencial pro projeto)
+.agents/
+.claude/
+.windsurf/
+skills-lock.json
+
+# Banco de dados local (SQLite)
+*.db
+*.db-journal

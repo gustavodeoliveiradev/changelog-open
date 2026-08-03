@@ -1,0 +1,60 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model User {
+  id           String    @id @default(uuid())
+  name         String
+  email        String    @unique
+  passwordHash String
+  createdAt    DateTime  @default(now())
+
+  projects     Project[]
+}
+
+model Project {
+  id          String    @id @default(uuid())
+  name        String
+  slug        String    @unique
+  description String?
+  isPublic    Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+
+  userId      String
+  user        User      @relation(fields: [userId], references: [id])
+
+  entries     Entry[]
+}
+
+model Entry {
+  id          String    @id @default(uuid())
+  version     String
+  title       String
+  publishedAt DateTime  @default(now())
+  createdAt   DateTime  @default(now())
+
+  projectId   String
+  project     Project   @relation(fields: [projectId], references: [id])
+
+  items       EntryItem[]
+}
+
+model EntryItem {
+  id          String    @id @default(uuid())
+  type        String    // "feature" | "bugfix" | "improvement" | "breaking"
+  description String
+  order       Int       @default(0)
+
+  entryId     String
+  entry       Entry     @relation(fields: [entryId], references: [id])
+}
