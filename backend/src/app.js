@@ -1,21 +1,20 @@
-// Importa as bibliotecas que acabamos de instalar
 const express = require('express');
 const cors = require('cors');
-require('dotenv').config(); // carrega as variáveis do arquivo .env
+require('dotenv').config();
 
-// Cria a "aplicação" do Express — é o coração do servidor
+const authRoutes = require('../src/routes/auth.routes'); // NOVO
+
 const app = express();
 
-// Middlewares: código que roda ANTES de chegar na sua rota de verdade
-app.use(cors());           // libera o CORS
-app.use(express.json());   // permite receber JSON no corpo das requisições (ex: no login)
+app.use(cors());
+app.use(express.json());
 
-// Nossa primeira rota — só pra confirmar que o servidor tá vivo
 app.get('/health', (req, res) => {
   res.json({ status: 'ok' });
 });
 
-// Pega a porta do .env, ou usa 3000 como padrão se não existir
+app.use('/api/auth', authRoutes); // NOVO — todas as rotas de auth.routes.js ficam disponíveis com prefixo /api/auth
+
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
