@@ -2,7 +2,8 @@ const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
 
-const authRoutes = require('../src/routes/auth.routes'); // NOVO
+const authRoutes = require('./routes/auth.routes');
+const errorHandler = require('./middleware/errorHandler.middleware');
 
 const app = express();
 
@@ -13,7 +14,9 @@ app.get('/health', (req, res) => {
   res.json({ status: 'ok' });
 });
 
-app.use('/api/auth', authRoutes); // NOVO — todas as rotas de auth.routes.js ficam disponíveis com prefixo /api/auth
+app.use('/api/auth', authRoutes);
+
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 3000;
 
