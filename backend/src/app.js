@@ -4,6 +4,7 @@ require('dotenv').config();
 
 const authRoutes = require('./routes/auth.routes');
 const errorHandler = require('./middleware/errorHandler.middleware');
+const projectRoutes = require('./routes/project.routes');
 
 const app = express();
 
@@ -15,6 +16,7 @@ app.get('/health', (req, res) => {
 });
 
 app.use('/api/auth', authRoutes);
+app.use('/api/projects', projectRoutes);
 
 app.use(errorHandler);
 
